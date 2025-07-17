@@ -1,15 +1,23 @@
 from django.urls import path, include
 from rest_framework import routers
-from rest_framework.schemas import get_schema_view
-from rest_framework.documentation import include_docs_urls
 from .views import TeamViewset, TaskViewset
-
-schema_view = get_schema_view(title='radyan-api')
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 
 urlpatterns = [
     path('', include('rest_framework.urls')),  # For browsable API
-    path('schema/', schema_view, name='api-schema'),
-    path('docs/', include_docs_urls(title='radyan-api')),
+
+    # OpenAPI schema endpoint
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+
+    # Swagger UI
+    path('schema/swagger-ui/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+
+    # ReDoc UI
+    path('schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
 
 routers = routers.DefaultRouter()
