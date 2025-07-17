@@ -1,0 +1,1 @@
+web: gunicorn radyan_rest_main.wsgi:application
