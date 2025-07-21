@@ -8,13 +8,9 @@ from .serializers import TeamSerializer, TaskSerializer
 class TeamViewset(viewsets.ModelViewSet):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
-
-    def partial_update(self, request, *args, **kwargs):
-        raise exceptions.MethodNotAllowed('PATCH')
+    http_method_names = ['get', 'post', 'put', 'delete']
 
 class TaskViewset(viewsets.ModelViewSet):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-
-    def partial_update(self, request, *args, **kwargs):
-        raise exceptions.MethodNotAllowed('PATCH')
+    http_method_names = ['get', 'post', 'put', 'delete']
