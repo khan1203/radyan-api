@@ -1,14 +1,20 @@
 from django.urls import path, include
 from rest_framework import routers
-from .views import TeamViewset, TaskViewset
+from .views import TeamViewset, TaskViewset, LoginView, RegisterView
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
 
+router = routers.DefaultRouter()
+router.register(r'teams', TeamViewset, basename='teams')
+router.register(r'tasks', TaskViewset, basename='tasks') 
+
 urlpatterns = [
-    path('', include('rest_framework.urls')),  # For browsable API
+
+    # For browsable API
+    path('', include('rest_framework.urls')), 
 
     # OpenAPI schema endpoint
     path('schema/', SpectacularAPIView.as_view(), name='schema'),
@@ -18,9 +24,9 @@ urlpatterns = [
 
     # ReDoc UI
     path('schema/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
-]
 
-routers = routers.DefaultRouter()
-routers.register(r'teams', TeamViewset, basename='teams')
-routers.register(r'tasks', TaskViewset, basename='tasks') 
-urlpatterns += routers.urls
+
+    path('', include(router.urls)),
+    path('login/', LoginView.as_view(), name='api-login'),
+    path('register/', RegisterView.as_view(), name='api-register'),
+]
